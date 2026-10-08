@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import SignUp from '../components/SignUp'
 import SignIn from '../components/SignIn'
-import Logo from '../components/Logo'
+import Logo from '../components/elements/Logo'
 
 export default function Registration() {
   const [firstEnter, setFirstEnter] = useState(true)

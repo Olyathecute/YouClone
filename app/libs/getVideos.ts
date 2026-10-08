@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 export async function getVideos(page: number) {
-  const response = await axios.get(`https://pixabay.com/api/videos/?key=${process.env.NEXT_PUBLIC_PIXABAY_API_KEY}`, {
+  const response = await axios.get('/api/videos', {
     params: {
       page,
       per_page: 20,
