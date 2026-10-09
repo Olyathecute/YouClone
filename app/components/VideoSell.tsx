@@ -21,6 +21,10 @@ export default function VideoSell({ video }: { video: any }) {
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const handleMouseEnter = () => {
+    if (timerRef.current !== null) {
+      clearTimeout(timerRef.current)
+    }
+
     timerRef.current = setTimeout(() => {
       setIsPlaying(true)
     }, 1000)
@@ -29,6 +33,7 @@ export default function VideoSell({ video }: { video: any }) {
     setIsPlaying(false)
     if (timerRef.current !== null) {
       clearTimeout(timerRef.current)
+      timerRef.current = null
     }
   }
 
@@ -37,24 +42,24 @@ export default function VideoSell({ video }: { video: any }) {
       <div className='flex justify-center'>
         <div className='flex flex-col gap-2'>
           <div className='relative' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-            <video
-              style={{
-                ...videoStyles,
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                opacity: isPlaying ? 1 : 0,
-              }}
-              width={100}
-              height={100}
-              autoPlay
-              playsInline
-              muted
-              loop
-              preload='none'
-            >
-              <source src={video.videos.small.url} type='video/mp4' />
-            </video>
+            {isPlaying && video && (
+              <video
+                style={{
+                  ...videoStyles,
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                }}
+                width={100}
+                height={100}
+                autoPlay
+                playsInline
+                muted
+                loop
+              >
+                <source src={video.videos.small.url} type='video/mp4' />
+              </video>
+            )}
 
             <Image
               src={video.videos.small.thumbnail}
@@ -63,7 +68,7 @@ export default function VideoSell({ video }: { video: any }) {
               height={100}
               loading='eager'
               className='object-contain'
-              style={{ ...videoStyles, ...{ opacity: isPlaying ? 0 : 1 } }}
+              style={videoStyles}
             />
           </div>
 
