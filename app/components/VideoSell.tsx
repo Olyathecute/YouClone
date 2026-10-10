@@ -27,7 +27,7 @@ export default function VideoSell({ video }: { video: any }) {
 
     timerRef.current = setTimeout(() => {
       setIsPlaying(true)
-    }, 1000)
+    }, 500)
   }
   const handleMouseLeave = () => {
     setIsPlaying(false)

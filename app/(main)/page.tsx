@@ -22,8 +22,6 @@ export default function MainPage() {
   videos.map((video: any) => uniqueVideos.add(video.id))
   const renderedVideos = useMemo(() => videos.filter((video: any) => uniqueVideos.has(video.id)), [videos])
 
-  // идёт постоянная загрузка видео????
-
   return (
     <>
       {isLoading ? (
