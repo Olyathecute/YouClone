@@ -27,7 +27,7 @@ export default function MainPage() {
       {isLoading ? (
         <Loader />
       ) : (
-        <div className='grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 lg: gap-3'>
+        <div className='grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 lg: gap-3 px-4'>
           {renderedVideos.map((video: any) => (
             <VideoSell video={video} key={video.id} />
           ))}

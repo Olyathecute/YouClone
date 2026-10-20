@@ -1,16 +1,17 @@
 import '../globals.css'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import { useInfiniteQuery } from '@tanstack/react-query'
-import { getVideos } from '../libs/getVideos'
+import { redirect } from 'next/navigation'
+import { auth } from '@/auth'
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  // const { data, isLoading, error } = useInfiniteQuery({
-  //   queryKey: ['videos'],
-  //   queryFn: ({ pageParam }) => getVideos(pageParam),
-  //   initialPageParam: 1,
-  //   getNextPageParam: () => undefined,
-  // })
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const session = await auth()
+
+  console.log('session', session)
+
+  if (!session?.user) {
+    redirect('/registration')
+  }
 
   return (
     <div className='min-h-screen flex flex-col '>
