@@ -13,7 +13,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const { username, password } = credentials
 
         if (typeof username === 'string' && typeof password === 'string') {
-          return validateUser(username, password) ? { id: username, name: username } : null
+          return (await validateUser(username, password)) ? { id: username, name: username } : null
         } else {
           return null
         }

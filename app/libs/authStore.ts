@@ -1,39 +1,18 @@
-type UserInfo = {
-  username: string
-  password: string
-  email: string
-}
+import bcrypt from 'bcryptjs'
+import { prisma } from '@/app/libs/prisma'
 
-const users = new Map<string, UserInfo>([['user', { username: 'user', password: 'user', email: 'user@mail.com' }]])
-const sessions = new Map<string, string>()
+export async function validateUser(username: string, password: string) {
+  const user = await prisma.user.findFirst({
+    where: {
+      username: username.trim(),
+    },
+  })
 
-console.log('authStore loaded:', Date.now())
-
-export function registerUser(username: string, password: string, email: string) {
-  if (users.has(username)) {
+  if (!user) {
     return false
   }
+  const isValid = await bcrypt.compare(password, user.passwordHash)
+  console.log('Password valid:', isValid)
 
-  users.set(username, { username, password, email })
-  return true
-}
-
-export function validateUser(username: string, password: string) {
-  const user = users.get(username)
-  return !!user && user?.password === password
-}
-
-export function createSession(sessionId: string, username: string) {
-  sessions.set(sessionId, username)
-  console.log('Sessions after create:', [...sessions.entries()])
-}
-
-export function getSessionUser(sessionId: string) {
-  console.log('getSessionUser called')
-  console.log('Sessions when checking:', [...sessions.entries()])
-  return sessions.get(sessionId)
-}
-
-export function deleteSession(sessionId: string) {
-  sessions.delete(sessionId)
+  return isValid
 }

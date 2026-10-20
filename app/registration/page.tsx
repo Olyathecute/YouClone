@@ -30,6 +30,8 @@ export default function Registration() {
       redirect: false,
     })
 
+    console.log('result signIn', result)
+
     if (result?.ok) {
       router.push('/')
     } else {

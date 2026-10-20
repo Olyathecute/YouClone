@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server'
-import { registerUser } from '@/app/libs/authStore'
 import bcrypt from 'bcryptjs'
 import { prisma } from '@/app/libs/prisma'
 import { Prisma } from '@/generated/prisma/client'
