@@ -1,7 +1,7 @@
 'use client'
 
 import Logo from './elements/Logo'
-import ModalWindow from './elements/ModalWindow'
+import ModalWindow from './ModalWindow'
 import { useState } from 'react'
 
 export default function Header() {
