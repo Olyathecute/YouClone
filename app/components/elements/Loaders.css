@@ -1,9 +1,25 @@
-.loader {
+.loaderSpinner {
+  width: 50px;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background:
+    radial-gradient(farthest-side, #ffd100 94%, #0000) top/8px 8px no-repeat,
+    conic-gradient(#0000 30%, #ffd100);
+  -webkit-mask: radial-gradient(farthest-side, #0000 calc(100% - 8px), #000 0);
+  animation: l13 1s infinite linear;
+}
+@keyframes l13 {
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+.loaderIceCream {
   width: 35px;
   height: 80px;
   position: relative;
 }
-.loader:after {
+.loaderIceCream:after {
   content: '';
   position: absolute;
   inset: 0 0 20px;
@@ -39,7 +55,7 @@
   -webkit-mask-repeat: no-repeat;
   animation: l3 3s infinite;
 }
-.loader:before {
+.loaderIceCream:before {
   content: '';
   position: absolute;
   inset: 50% calc(50% - 4px) 0;

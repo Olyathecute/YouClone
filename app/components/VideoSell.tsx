@@ -39,7 +39,7 @@ export default function VideoSell({ video }: { video: any }) {
 
   return (
     <Link key={video.id} href={`/currentVideo/${video.id}`}>
-      <div className='flex justify-center w-full'>
+      <div className='flex justify-center w-full hover:rounded-xl hover:bg-light-elements p-2'>
         <div className='flex flex-col gap-2'>
           <div className='relative' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             {isPlaying && video && (
@@ -72,7 +72,7 @@ export default function VideoSell({ video }: { video: any }) {
             />
           </div>
 
-          <div className='flex flex-row items-start justify-start gap-2 rounded-xl bg-light-elements p-2'>
+          <div className='flex flex-row items-start justify-start gap-2'>
             <div>
               <Image
                 src={video.userImageURL ? video.userImageURL : '/darkRandomUser.svg'}

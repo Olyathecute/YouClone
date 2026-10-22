@@ -15,7 +15,7 @@ export default function Header() {
   const [modalWindow, setModalWindow] = useState(false)
 
   return (
-    <div className='w-screen px-5 py-2 sticky top-0 z-50 bg-light-background'>
+    <div className='w-screen px-4 py-2 sticky top-0 z-50 bg-light-background'>
       <div className='flex flex-row items-center justify-between'>
         <Link href='/'>
           <Logo />

@@ -7,8 +7,6 @@ import { auth } from '@/auth'
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await auth()
 
-  console.log('session', session)
-
   if (!session?.user) {
     redirect('/registration')
   }

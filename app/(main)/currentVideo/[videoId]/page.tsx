@@ -3,7 +3,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 import { getVideo } from '@/app/libs/getVideo'
-import Loader from '@/app/components/elements/Loader'
+import Loader from '@/app/components/elements/LoaderIceCream'
 import Image from 'next/image'
 import Link from 'next/link'
 import '../../../globals.css'
