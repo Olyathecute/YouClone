@@ -6,8 +6,8 @@ import Logo from './elements/Logo'
 import Image from 'next/image'
 import ModalWindow from './ModalWindow'
 
-const user: React.CSSProperties = {
-  width: '3rem',
+const user = {
+  width: 'clamp(1.8rem, 5vw, 3.2rem)',
   height: 'auto',
 }
 
@@ -23,7 +23,7 @@ export default function Header() {
         <div>Search</div>
         {/* <div>Theme Switch</div>
         <div>Lang Switch</div> */}
-        <div>
+        <div className='flex justify-center'>
           <button onClick={() => setModalWindow(!modalWindow)}>
             <Image
               src={'/lightUser.svg'}

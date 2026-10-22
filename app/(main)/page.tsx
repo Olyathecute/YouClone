@@ -56,7 +56,7 @@ export default function MainPage() {
       ) : (
         <>
           <div className='flex flex-col items-center'>
-            <div className='grid gap-2 sm:grid-cols-1 md:grid-cols-3 md:gap-5 xl:grid-cols-4 px-4'>
+            <div className='grid gap-2 sm:grid-cols-1 md:grid-cols-3 md:gap-5 xl:grid-cols-4 px-2'>
               {renderedVideos.map((video: any) => (
                 <VideoSell video={video} key={video.id} />
               ))}
