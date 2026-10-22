@@ -3,7 +3,13 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import Logo from './elements/Logo'
+import Image from 'next/image'
 import ModalWindow from './ModalWindow'
+
+const user: React.CSSProperties = {
+  width: '3rem',
+  height: 'auto',
+}
 
 export default function Header() {
   const [modalWindow, setModalWindow] = useState(false)
@@ -18,7 +24,17 @@ export default function Header() {
         {/* <div>Theme Switch</div>
         <div>Lang Switch</div> */}
         <div>
-          <button onClick={() => setModalWindow(!modalWindow)}>User</button>
+          <button onClick={() => setModalWindow(!modalWindow)}>
+            <Image
+              src={'/lightUser.svg'}
+              alt={'My account'}
+              width={100}
+              height={100}
+              loading='eager'
+              style={user}
+              className='rounded-full object-cover'
+            />
+          </button>
         </div>
         {modalWindow && <ModalWindow />}
       </div>

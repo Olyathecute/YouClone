@@ -10,10 +10,10 @@ const userStyles: React.CSSProperties = {
 }
 
 const videoStyles: React.CSSProperties = {
-  width: '25rem',
+  width: '45rem',
   height: '15rem',
   objectFit: 'cover',
-  borderRadius: '1.5rem',
+  borderRadius: '1rem',
 }
 
 export default function VideoSell({ video }: { video: any }) {
@@ -39,7 +39,7 @@ export default function VideoSell({ video }: { video: any }) {
 
   return (
     <Link key={video.id} href={`/currentVideo/${video.id}`}>
-      <div className='flex justify-center'>
+      <div className='flex justify-center w-full'>
         <div className='flex flex-col gap-2'>
           <div className='relative' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             {isPlaying && video && (
@@ -62,30 +62,30 @@ export default function VideoSell({ video }: { video: any }) {
             )}
 
             <Image
-              src={video.videos.small.thumbnail}
+              src={video.videos.large.thumbnail}
               alt={video.user}
-              width={100}
-              height={100}
+              width={800}
+              height={800}
               loading='eager'
               className='object-contain'
               style={videoStyles}
             />
           </div>
 
-          <div className='flex flex-row items-start justify-start gap-2'>
+          <div className='flex flex-row items-start justify-start gap-2 rounded-xl bg-light-elements p-2'>
             <div>
               <Image
                 src={video.userImageURL ? video.userImageURL : '/darkRandomUser.svg'}
                 alt={video.user}
+                style={userStyles}
                 width={100}
                 height={100}
-                style={userStyles}
                 loading='eager'
                 className='rounded-full object-cover'
               />
             </div>
             <div>
-              <h3 className='font-bold'>{video.name}</h3>
+              <h3 className='font-bold line-clamp-1'>{video.name}</h3>
               <span className='opacity-50'>{video.user}</span>
             </div>
           </div>
