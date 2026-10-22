@@ -3,9 +3,9 @@ import { z } from 'zod'
 export const registrationSchema = z.object({
   username: z
     .string()
-    .min(5, 'Too short Username🫸 🫷')
-    .max(50, 'Too long Username 🫸     🫷')
-    .regex(/^[A-Za-z0-9_]+$/, 'Username can only contain 🔠, 🔡, 🔢 and `_`'),
+    .min(5, 'Too short Username🫸\u00A0🫷')
+    .max(15, 'Too long Username🫸\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0🫷')
+    .regex(/^[A-Za-z0-9_]+$/, 'Username can only contain 🔠, 🔡, 🔢 and _'),
   password: z
     .string()
     .min(8, 'At least 8 symbols')

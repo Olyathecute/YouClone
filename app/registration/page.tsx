@@ -26,8 +26,6 @@ export default function Registration() {
   const [firstEnter, setFirstEnter] = useState(false)
   const [loading, setLoading] = useState(false)
 
-  console.log('firstEnter', firstEnter)
-
   const form = useForm<any>({
     resolver: zodResolver(firstEnter ? registrationSchema : loginSchema),
     defaultValues: {
@@ -45,10 +43,15 @@ export default function Registration() {
     })
 
     if (result?.error) {
+      form.setError('username', {
+        type: 'server',
+        message: '',
+      })
       form.setError('password', {
         type: 'server',
         message: 'Incorrect username or password',
       })
+      setLoading(false)
 
       return
     }
@@ -69,13 +72,17 @@ export default function Registration() {
       redirect: false,
     })
 
-    if (result?.ok) {
-      router.push('/')
-    } else {
-      console.log('Login failed')
+    if (result?.error) {
+      form.setError('password', {
+        type: 'server',
+        message: 'This username or email already exist',
+      })
+      setLoading(false)
+
+      return
     }
 
-    return null
+    router.push('/')
   }
 
   const onSubmit = (data: Registration | Enter) => {
@@ -89,36 +96,74 @@ export default function Registration() {
   }
 
   return (
-    <div className='min-h-screen flex flex-col items-center justify-center p-10 gap-6'>
+    <div className='min-h-screen flex flex-col items-center justify-center p-10 gap-4'>
       <div>
         <Logo />
       </div>
-      <h1>{registerText.greeting[Number(firstEnter)]}</h1>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col items-center justify-center gap-2'>
-        <input {...form.register('username')} type='text' placeholder='Username' />
+      <h1 className='font-primary text-2xl'>{registerText.greeting[Number(firstEnter)]}</h1>
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        noValidate
+        className='flex flex-col  justify-center gap-2 w-full md:w-1/2 xl:w-1/4'
+      >
+        <input
+          {...form.register('username')}
+          type='text'
+          placeholder='Username'
+          className={`w-full border rounded p-2 outline-none ${
+            form.formState.errors.username
+              ? 'border-red-500 focus:ring-1 focus:ring-red-500'
+              : 'border-gray-300 focus:ring-1 focus:ring-yellow-400'
+          }`}
+        />
         {typeof form.formState.errors.username?.message === 'string' && (
-          <p className='text-xs text-accent'>{form.formState.errors.username.message}</p>
+          <p className='text-xs text-error'>{form.formState.errors.username.message}</p>
         )}
         {!firstEnter ? null : (
           <>
-            <input {...form.register('email')} type='email' placeholder='Email' />
+            <input
+              {...form.register('email')}
+              type='email'
+              placeholder='Email'
+              className={`w-full border rounded p-2 outline-none ${
+                form.formState.errors.email
+                  ? 'border-red-500 focus:ring-1 focus:ring-red-500'
+                  : 'border-gray-300 focus:ring-1 focus:ring-yellow-400'
+              }`}
+            />
             {typeof form.formState.errors.email?.message === 'string' && (
-              <p className='text-xs text-accent'>{form.formState.errors.email.message}</p>
+              <p className='text-xs text-error'>{form.formState.errors.email.message}</p>
             )}
           </>
         )}
-        <input {...form.register('password')} type='password' placeholder='Password' />
+        <input
+          {...form.register('password')}
+          type='password'
+          placeholder='Password'
+          className={`w-full border rounded p-2 outline-none ${
+            form.formState.errors.password
+              ? 'border-red-500 focus:ring-1 focus:ring-red-500'
+              : 'border-gray-300 focus:ring-1 focus:ring-yellow-400'
+          }`}
+        />
         {typeof form.formState.errors.password?.message === 'string' && (
-          <p className='text-xs text-accent'>{form.formState.errors.password.message}</p>
+          <p className='text-xs text-error'>{form.formState.errors.password.message}</p>
         )}
 
-        <button type='submit' className='bg-blue-500 text-white px-4 py-2 rounded-md cursor-pointer'>
-          {loading ? 'Loading' : registerText.button[Number(firstEnter)]}
+        <button type='submit' className='bg-accent text-white px-4 py-2 rounded-md cursor-pointer w-full loading-dots'>
+          {loading ? <span className='loading-dots'>Loading </span> : registerText.button[Number(firstEnter)]}
         </button>
       </form>
       <h1>
         {registerText.question[Number(firstEnter)]}{' '}
-        <button className='cursor-pointer' onClick={() => setFirstEnter(!firstEnter)} disabled={loading}>
+        <button
+          className='cursor-pointer font-primary text-xl'
+          onClick={() => {
+            setFirstEnter(!firstEnter)
+            form.reset()
+          }}
+          disabled={loading}
+        >
           {registerText.button[Number(!firstEnter)]}
         </button>
       </h1>
