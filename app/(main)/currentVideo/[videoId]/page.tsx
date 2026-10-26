@@ -1,7 +1,10 @@
 'use client'
 
+import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
+import { addLike, removeLike } from '@/app/redux/likeSlice'
 import { getVideo } from '@/app/libs/getVideo'
 import Loader from '@/app/components/elements/LoaderIceCream'
 import Image from 'next/image'
@@ -17,10 +20,16 @@ const userStyles = {
   width: '3rem',
 }
 
-export default function Video() {
-  const { videoId } = useParams<{ videoId: string }>()
-  console.log('currentVideo', videoId)
+const widgetStyles = {
+  width: '2.5rem',
+}
 
+export default function Video() {
+  const dispatch = useAppDispatch()
+
+  const [isAnimating, setIsAnimating] = useState(false)
+
+  const { videoId } = useParams<{ videoId: string }>()
   const id = Number(videoId)
 
   const { data, isLoading, error } = useQuery({
@@ -29,10 +38,22 @@ export default function Video() {
   })
 
   const video = data?.hits[0]
-  console.log('data getVideo', video)
+  const comments = useMemo(
+    () => Array.from({ length: video?.comments ?? 0 }, () => Math.round(Math.random() * 100)),
+    [video],
+  )
+  const followers = useMemo(() => Math.round(Math.random() * 1000), [video])
+  const isLiked = useAppSelector((state) => state.likes.likedVideoIds.includes(id))
 
-  const comments = Array.from({ length: video?.comments }, () => Math.round(Math.random() * 100))
-  console.log('comments', comments)
+  const handleLike = () => {
+    if (isLiked) {
+      dispatch(removeLike(id))
+    } else {
+      dispatch(addLike(id))
+      setIsAnimating(true)
+      setTimeout(() => setIsAnimating(false), 500)
+    }
+  }
 
   return isLoading ? (
     <Loader />
@@ -69,17 +90,25 @@ export default function Video() {
                 <Link key={video.id} href={video.userURL} target='_blank'>
                   <span>{video.user}</span>
                 </Link>
-                <span className='opacity-50'>{Math.round(Math.random() * 1000)} followers</span>
+                <span className='opacity-50'>{followers} followers</span>
               </div>
             </div>
 
-            <div className='flex flex-row gap-5'>
-              <div className='flex flex-row rounded-xl items-center gap-2 px-2 py-1'>
-                <Image src='/likes.svg' alt='likes' width={90} height={90} style={userStyles} />
-                <span>{video.likes}</span>
-              </div>
-              <div className='flex flex-row rounded-xl items-center gap-2 px-2 py-1'>
-                <Image src='/views.svg' alt='views' width={90} height={90} style={userStyles} />
+            <div className='flex flex-row gap-1'>
+              <button onClick={handleLike} className='flex flex-row rounded-xl items-center gap-2 px-2 py-1'>
+                <Image
+                  src={isLiked ? '/liked.png' : '/likes.png'}
+                  alt='Likes'
+                  width={100}
+                  height={100}
+                  style={widgetStyles}
+                  className={`${isAnimating ? 'animate-like-pop' : ''}`}
+                />
+                <span>{video?.likes + Number(isLiked)}</span>
+              </button>
+
+              <div className='flex flex-row rounded-xl items-center px-2 py-1'>
+                <Image src='/views.svg' alt='Views' width={100} height={100} style={widgetStyles} />
                 <span>{video.views}</span>
               </div>
             </div>
@@ -89,12 +118,18 @@ export default function Video() {
         <div>
           <h1 className='font-bold py-4'>Comments {video.comments}</h1>
           <div className='flex flex-col justify-start gap-5'>
-            {comments.map((item, key) => (
+            {comments.map((comment, key) => (
               <div key={key} className='flex flex-row items-start gap-2'>
-                <Image src={'/darkRandomUser.svg'} alt={`User-${item}`} width={100} height={100} style={userStyles} />
+                <Image
+                  src={'/darkRandomUser.svg'}
+                  alt={`User-${comment}`}
+                  width={100}
+                  height={100}
+                  style={userStyles}
+                />
                 <div className='flex flex-col gap-1'>
-                  <span className='font-bold'>User-{item}</span>
-                  <span>{commentText.slice(0, item)}</span>
+                  <span className='font-bold'>User-{comment}</span>
+                  <span>{commentText.slice(0, comment)}</span>
                 </div>
               </div>
             ))}

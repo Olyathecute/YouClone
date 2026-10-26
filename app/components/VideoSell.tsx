@@ -2,7 +2,9 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
+import { useAppSelector } from '@/app/redux/hooks'
 import { useState, useRef } from 'react'
+import '../globals.css'
 
 const userStyles: React.CSSProperties = {
   width: '2rem',
@@ -17,6 +19,7 @@ const videoStyles: React.CSSProperties = {
 }
 
 export default function VideoSell({ video }: { video: any }) {
+  const isLiked = useAppSelector((state) => state.likes.likedVideoIds.includes(video.id))
   const [isPlaying, setIsPlaying] = useState(false)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -42,6 +45,23 @@ export default function VideoSell({ video }: { video: any }) {
       <div className='flex justify-center w-full hover:rounded-xl hover:bg-light-elements p-2'>
         <div className='flex flex-col gap-2'>
           <div className='relative' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            {isLiked && (
+              <Image
+                src={'/liked.png'}
+                alt={''}
+                width={100}
+                height={100}
+                style={{
+                  position: 'absolute',
+                  top: 10,
+                  right: 10,
+                  zIndex: 10,
+                  width: '1rem',
+                  height: 'auto',
+                }}
+                className='animate-like-broke'
+              />
+            )}
             {isPlaying && video && (
               <video
                 style={{

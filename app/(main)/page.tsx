@@ -2,9 +2,8 @@
 
 import { getVideos } from '../libs/getVideos'
 import { useInfiniteQuery } from '@tanstack/react-query'
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useMemo } from 'react'
 import Loader from '../components/elements/LoaderIceCream'
-import { useMemo } from 'react'
 import VideoSell from '../components/VideoSell'
 import LoaderSpinner from '../components/elements/LoaderSpinner'
 

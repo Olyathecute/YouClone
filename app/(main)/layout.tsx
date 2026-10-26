@@ -3,6 +3,7 @@ import Header from '../components/Header'
 import Footer from '../components/Footer'
 import { redirect } from 'next/navigation'
 import { auth } from '@/auth'
+import StoreProvider from '../StoreProvider'
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const session = await auth()
@@ -12,10 +13,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   }
 
   return (
-    <div className='min-h-screen flex flex-col '>
-      <Header />
-      <main className='flex-1 flex items-center justify-center'>{children}</main>
-      <Footer />
-    </div>
+    <StoreProvider>
+      <div className='min-h-screen flex flex-col'>
+        <Header />
+        <main className='flex-1 flex items-center justify-center'>{children}</main>
+        <Footer />
+      </div>
+    </StoreProvider>
   )
 }
