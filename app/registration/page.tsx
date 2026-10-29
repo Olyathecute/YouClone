@@ -92,7 +92,6 @@ export default function Registration() {
     } else {
       signIn(data.username, data.password)
     }
-    console.log('EnterData', data)
   }
 
   return (

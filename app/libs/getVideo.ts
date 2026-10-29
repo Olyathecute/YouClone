@@ -6,7 +6,5 @@ export async function getVideo(id: number) {
       id,
     },
   })
-
-  console.log('RESPONSE getVideo', response.data)
   return response.data
 }

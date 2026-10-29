@@ -70,7 +70,7 @@ export default function VideoSell({ video }: { video: any }) {
                   event.stopPropagation()
                   handleLike(video.id)
                 }}
-                className='absolute top-[10px] right-[10px] z-10 w-4 h-auto cursor-pointer'
+                className='absolute top-2.5 right-2.5 z-10 w-4 h-auto cursor-pointer'
               >
                 <Image
                   src={isLiked ? '/liked.png' : '/likes.png'}
