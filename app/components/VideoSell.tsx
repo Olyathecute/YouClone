@@ -2,8 +2,9 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useAppSelector } from '@/app/redux/hooks'
 import { useState, useRef } from 'react'
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
+import { addLike, removeLike } from '@/app/redux/likeSlice'
 import '../globals.css'
 
 const userStyles: React.CSSProperties = {
@@ -18,8 +19,15 @@ const videoStyles: React.CSSProperties = {
   borderRadius: '1rem',
 }
 
+const widgetStyles = {
+  width: '2.5rem',
+}
+
 export default function VideoSell({ video }: { video: any }) {
+  const dispatch = useAppDispatch()
+  const [isAnimating, setIsAnimating] = useState(false)
   const isLiked = useAppSelector((state) => state.likes.likedVideoIds.includes(video.id))
+
   const [isPlaying, setIsPlaying] = useState(false)
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
@@ -40,27 +48,39 @@ export default function VideoSell({ video }: { video: any }) {
     }
   }
 
+  const handleLike = (id: number) => {
+    if (isLiked) {
+      dispatch(removeLike(id))
+    } else {
+      dispatch(addLike(id))
+      setIsAnimating(true)
+      setTimeout(() => setIsAnimating(false), 500)
+    }
+  }
+
   return (
     <Link key={video.id} href={`/currentVideo/${video.id}`}>
       <div className='flex justify-center w-full hover:rounded-xl hover:bg-light-elements p-2'>
         <div className='flex flex-col gap-2'>
           <div className='relative' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             {isLiked && (
-              <Image
-                src={'/liked.png'}
-                alt={''}
-                width={100}
-                height={100}
-                style={{
-                  position: 'absolute',
-                  top: 10,
-                  right: 10,
-                  zIndex: 10,
-                  width: '1rem',
-                  height: 'auto',
+              <button
+                onClick={(event) => {
+                  event.preventDefault()
+                  event.stopPropagation()
+                  handleLike(video.id)
                 }}
-                className='animate-like-broke'
-              />
+                className='absolute top-[10px] right-[10px] z-10 w-4 h-auto cursor-pointer'
+              >
+                <Image
+                  src={isLiked ? '/liked.png' : '/likes.png'}
+                  alt='Likes'
+                  width={100}
+                  height={100}
+                  style={widgetStyles}
+                  className={`${isAnimating ? 'animate-like-pop' : ''}`}
+                />
+              </button>
             )}
             {isPlaying && video && (
               <video

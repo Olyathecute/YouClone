@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useAppDispatch, useAppSelector } from '@/app/redux/hooks'
+import { closeModalWindow, openModalWindow } from '@/app/redux/modalWindowSlice'
 import Link from 'next/link'
 import Logo from './elements/Logo'
 import Image from 'next/image'
@@ -12,7 +13,16 @@ const user = {
 }
 
 export default function Header() {
-  const [modalWindow, setModalWindow] = useState(false)
+  const dispatch = useAppDispatch()
+  const modalWindowIsOpen = useAppSelector((state) => state.modalWindow.modalWindowIsOpen)
+
+  const handleClick = () => {
+    if (modalWindowIsOpen) {
+      dispatch(closeModalWindow())
+    } else {
+      dispatch(openModalWindow())
+    }
+  }
 
   return (
     <div className='w-screen px-4 py-2 sticky top-0 z-50 bg-light-background'>
@@ -24,7 +34,7 @@ export default function Header() {
         {/* <div>Theme Switch</div>
         <div>Lang Switch</div> */}
         <div className='flex justify-center'>
-          <button onClick={() => setModalWindow(!modalWindow)}>
+          <button onClick={handleClick} className='cursor-pointer'>
             <Image
               src={'/lightUser.svg'}
               alt={'My account'}
@@ -36,7 +46,7 @@ export default function Header() {
             />
           </button>
         </div>
-        {modalWindow && <ModalWindow />}
+        {modalWindowIsOpen && <ModalWindow />}
       </div>
     </div>
   )

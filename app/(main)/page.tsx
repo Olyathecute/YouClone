@@ -8,7 +8,7 @@ import VideoSell from '../components/VideoSell'
 import LoaderSpinner from '../components/elements/LoaderSpinner'
 
 export default function MainPage() {
-  const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
+  const { data, isLoading, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ['videos'],
     queryFn: ({ pageParam }) => getVideos(pageParam),
     initialPageParam: 1,

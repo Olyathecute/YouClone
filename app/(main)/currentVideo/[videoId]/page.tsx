@@ -95,7 +95,10 @@ export default function Video() {
             </div>
 
             <div className='flex flex-row gap-1'>
-              <button onClick={handleLike} className='flex flex-row rounded-xl items-center gap-2 px-2 py-1'>
+              <button
+                onClick={handleLike}
+                className='cursor-pointer flex flex-row rounded-xl items-center gap-2 px-2 py-1'
+              >
                 <Image
                   src={isLiked ? '/liked.png' : '/likes.png'}
                   alt='Likes'
